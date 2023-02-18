@@ -178,6 +178,10 @@
 		--> As for 'baygaud.py', the same options are available. 'baygaud_classify.py' can be run either with
 		no arguments to use the default baygaud parameters, or with a specified baygaud parameter file. 
 		
+		--> If you run baygaud_classify.py without arguments, it will print out the usage.
+		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
+		--> 
+		
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
 		or
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py _baygaud_params.ngc2403.txt (<-- recommended)
