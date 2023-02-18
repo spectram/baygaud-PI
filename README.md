@@ -230,7 +230,7 @@
 		warm
 
 
-5. Running baygaud_viwer.py
+5. Running baygaud_viewer.py
 
 		--> You can view the results of baygaud's multi-Gaussian profile analysis for individual
 		velocity profiles using the 'baygaud_viewer.py' code. This code reads the optimal number
