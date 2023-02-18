@@ -261,7 +261,7 @@
 
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py 1
 		or
-		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.txt 1
+		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.txt 1. (<-- recommended)
 
 		
 ![Screen Shot 2023-02-05 at 12 19 38 AM](https://user-images.githubusercontent.com/100483350/216775296-c040f123-9062-4c38-8a53-fd5e60467d8a.png)
