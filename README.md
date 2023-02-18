@@ -178,7 +178,7 @@
 		--> As for 'baygaud.py', the same options are available. 'baygaud_classify.py' can be run either with
 		no arguments to use the default baygaud parameters, or with a specified baygaud parameter file. 
 		
-		--> If you run baygaud_classify.py without arguments, it will print out the usage.
+		--> If you simply run the script without any arguments. This will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
 		--> 
 		___________________________________________________________________________________________
@@ -237,7 +237,7 @@
 		of Gaussian profiles derived by 'baygaud_classify.py' and displays the decomposed Gaussian
 		components overlaid on each spectral line.
 		
-		--> If you run baygaud_viewer.py without arguments, it will print out the usage.
+		--> If you simply run the script without any arguments. This will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py
 		--> 
 		___________________________________________________________________________________________
