@@ -10219,7 +10219,10 @@ def main():
     print("")
     print("")
     # ............................................................................. #
-    _list_segs_bf = os.listdir(outputdir_segs)
+    _list_segs_bf = [_file for _file in os.listdir(outputdir_segs) if _file.startswith("G%02d" % _params['max_ngauss'])]
+    #print("G%02d" % _params['max_ngauss'])
+
+    #_list_segs_bf = os.listdir(outputdir_segs).startswith("G05")
     _list_segs_bf.sort(key = lambda x: x.split('.x')[1], reverse=False) # reverse with x pixels
     
     #combined_segs_bf = open('output.npy', "wb")
