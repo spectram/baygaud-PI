@@ -181,10 +181,27 @@
 		--> If you run baygaud_classify.py without arguments, it will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
 		--> 
+		___________________________________________________________________________________________
+
+ 		:: baygaud_classify.py usage ::
+
+ 		usage-1: running baygaud_classify.py with baygaud_params file
+ 		> python3 baygaud_classify.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]
+		 e.g.,
+		 > python3 baygaud_classify.py _baygaud_params.ngc2403.txt 1
+		-------------------------------------------------------------------------------------------
+ 		usage-2: running baygaud_classify.py with the DEFAULT baygaud_params file
+  	      	: the DEFAULT baygaud_params file: _baygaud_params.py
+		 > python3 baygaud_classify.py [ARG1: output-index, 1, 2, ...]
+ 		e.g.,
+ 		> python3 baygaud_classify.py 1
+		___________________________________________________________________________________________
 		
-		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
+	
+		
+		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py 1
 		or
-		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py _baygaud_params.ngc2403.txt (<-- recommended)
+		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py _baygaud_params.ngc2403.txt 1 (<-- recommended)
 		--> The latter option will be useful when running baygaud-PI for a number of galaxies,
 		for which the _baygaud_params file has been specified.
 		
@@ -198,7 +215,7 @@
 		# working directory where the input data cube is
 		'wdir':'/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
 		
-		--> A directory named 'baygaud_combined' will be created where the decomposed Gaussian components
+		--> A directory named 'segmts_merged_n_classified.1' will be created where the decomposed Gaussian components
 		are stored. These Gaussian components (such as bulk, cool, warm, hot, non_bulk, psgfit, and sgfit,
 		or any others defined by the user) are classified based on their kinematic properties set in the
 		'_baygaud_params.py' file.
@@ -219,11 +236,32 @@
 		velocity profiles using the 'baygaud_viewer.py' code. This code reads the optimal number
 		of Gaussian profiles derived by 'baygaud_classify.py' and displays the decomposed Gaussian
 		components overlaid on each spectral line.
-
-		--> Run 'baygaud_viewer.py'
+		
+		--> If you run baygaud_viewer.py without arguments, it will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py
+		--> 
+		___________________________________________________________________________________________
+
+ 		:: baygaud_viewer.py usage ::
+
+ 		usage-1: running baygaud_viewer.py with baygaud_params file
+		 > python3 baygaud_viewer.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]
+ 		output-index is the postfix number of the baygaud segments merged directory.
+		 i.e., 'segmts_merged_n_classified.[output-index]' in 'wdir'
+ 		e.g.,
+ 		> python3 baygaud_viewer.py _baygaud_params.ngc2403.txt 1
+		-------------------------------------------------------------------------------------------
+		 usage-2: running baygaud_viewer.py with the DEFAULT baygaud_params file
+ 		       : the DEFAULT baygaud_params file: _baygaud_params.py
+ 		> python3 baygaud_viewer.py [ARG1: output-index, 1, 2, ...]
+ 		e.g.,
+ 		> python3 baygaud_viewer.py 1
+		___________________________________________________________________________________________
+
+
+		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py 1
 		or
-		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.txt
+		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.txt 1
 
 		
 ![Screen Shot 2023-02-05 at 12 19 38 AM](https://user-images.githubusercontent.com/100483350/216775296-c040f123-9062-4c38-8a53-fd5e60467d8a.png)
