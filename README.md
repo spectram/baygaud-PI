@@ -149,7 +149,7 @@
 		
 		# Output directory in ‘_baygaud_params.py’
 		
-		'_segdir':'baygaud_segs_output',
+		_segdir: 'segmts'
 
 		--> In the _segdir directory, all of the Gaussian fit results for each sub-cube (segment, xN--ys:ye--vel)
 		are saved in binary format. For example,
@@ -213,7 +213,7 @@
 		--> In the working directory, as in _baygaud_params.py above,
 		
 		# working directory where the input data cube is
-		'wdir':'/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
+		wdir: '/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
 		
 		--> A directory named 'segmts_merged_n_classified.1' will be created where the decomposed Gaussian components
 		are stored. These Gaussian components (such as bulk, cool, warm, hot, non_bulk, psgfit, and sgfit,
