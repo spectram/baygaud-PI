@@ -475,8 +475,8 @@ if len(sys.argv) == 1:
     print(91*"")
     print(" usage-1: running baygaud_viewer.py with baygaud_params file")
     print(" > python3 baygaud_viewer.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]")
-    print(" output-index is the postfix number of the baygaud segments merged directory."
-    print(" i.e., 'segmts_merged_n_classified.[output-index]' in 'wdir'"
+    print(" output-index is the postfix number of the baygaud segments merged directory.")
+    print(" i.e., 'segmts_merged_n_classified.[output-index]' in 'wdir'")
     print(" e.g.,")
     print(" > python3 baygaud_viewer.py _baygaud_params.ngc2403.txt 1")
 
