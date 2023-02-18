@@ -65,12 +65,35 @@ def main():
     # read the input datacube
     start = datetime.now()
 
-    if len(sys.argv) < 2:
+
+    if len(sys.argv) == 1:
         ("WARNING: No configfile supplied, trying default values")
+        print(91*"-")
+        print(" usage-2: running baygaud.py with the DEFAULT baygaud_params file")
+        print("        : the DEFAULT baygaud_params file: _baygaud_params.py")
+        print(" e.g.,")
+        print(" > python3 baygaud.py")
+        print(91*"_")
+        print("")
+        print("")
         _params=default_params()
+
     elif len(sys.argv) == 2:
+        print("")
+        print(91*"_")
+        print(91*"")
+        print(" :: baygaud.py usage ::")
+        print(91*"")
+        print(" usage-1: running baygaud.py with baygaud_params file")
+        print(" > python3 baygaud.py [ARG1: _baygaud_params.txt]")
+        print(" e.g.,")
+        print(" > python3 baygaud.py _baygaud_params.ngc2403.txt")
+        print("")
+        print("")
+
         configfile = sys.argv[1]
         _params=read_configfile(configfile)
+
 
     _is = int(_params['naxis1_s0'])
     _ie = int(_params['naxis1_e0'])

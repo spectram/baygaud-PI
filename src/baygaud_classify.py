@@ -3643,7 +3643,7 @@ def g1_opt_bf(_fitsarray_gfit_results2, bevidences_sort, g_num_sort, sn_pass_ng_
     g_opt = np.zeros((_fitsarray_gfit_results2.shape[1], _fitsarray_gfit_results2.shape[2]), dtype=float)
     # if (z1/z2 > bf_limit): --> g1
     #g1_cond1 = np.where((bevidences_sort[0, :, :] - bevidences_sort[1, :, :]) > np.log(bf_limit))
-    g_opt += 0
+    #g_opt += 0
     #print(g_opt)
     return g_opt
 #-- END OF SUB-ROUTINE____________________________________________________________#
@@ -10172,13 +10172,56 @@ def main():
     # start time
     _time_start = datetime.now()
 
-    if len(sys.argv) < 2:
-        ("WARNING: No configfile supplied, trying default values")
-        _params=default_params()
+    if len(sys.argv) == 1:
+        print("")
+        print(91*"_")
+        print(91*"")
+        print(" :: baygaud_classify.py usage ::")
+        print(91*"")
+        print(" usage-1: running baygaud_classify.py with baygaud_params file")
+        print(" > python3 baygaud_classify.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]")
+        print(" e.g.,")
+        print(" > python3 baygaud_classify.py _baygaud_params.ngc2403.txt 1")
+
+        print(91*"-")
+        print(" usage-2: running baygaud_classify.py with the DEFAULT baygaud_params file")
+        print("        : the DEFAULT baygaud_params file: _baygaud_params.py")
+        print(" > python3 baygaud_classify.py [ARG1: output-index, 1, 2, ...]")
+        print(" e.g.,")
+        print(" > python3 baygaud_classify.py 1")
+        print(91*"_")
+        print("")
+        sys.exit()
 
     elif len(sys.argv) == 2:
+        ("WARNING: No configfile supplied, trying default values")
+        _params=default_params()
+        _classified_index = int(sys.argv[1])
+
+        _dir_baygaud_combined = _params['wdir'] + '/' + _params['_combdir'] + ".%d" % _classified_index
+        if os.path.exists(_dir_baygaud_combined):
+            print("")
+            print(91*"-")
+            print(" %s directory already exists." % _dir_baygaud_combined)
+            print(" Try to use another output-index...")
+            print(91*"-")
+            print("")
+            sys.exit()
+
+    elif len(sys.argv) == 3:
         configfile = sys.argv[1]
         _params=read_configfile(configfile)
+        _classified_index = int(sys.argv[2])
+
+        _dir_baygaud_combined = _params['wdir'] + '/' + _params['_combdir'] + ".%d" % _classified_index
+        if os.path.exists(_dir_baygaud_combined):
+            print("")
+            print(91*"-")
+            print(" %s directory already exists." % _dir_baygaud_combined)
+            print(" Try to use another output-index...")
+            print(91*"-")
+            print("")
+            sys.exit()
 
 
     #  _____________________________________________________________________________  #
@@ -10278,19 +10321,21 @@ def main():
     #-----------------------------------------------#
     # create baygaud output directories
     #_______________________________________________#
-    # baygaud_combined
-    make_dirs("%s/%s" % (_params['wdir'], _params['_combdir']))
-    _dir_baygaud_combined = _params['wdir'] + '/' + _params['_combdir']
+    # baygaud segments merged and classified
+    make_dirs("%s/%s.%d" % (_params['wdir'], _params['_combdir'], _classified_index))
+    _dir_baygaud_combined = _params['wdir'] + '/' + _params['_combdir'] + ".%d" % _classified_index
 
-    make_dirs("%s/%s/sgfit" % (_params['wdir'], _params['_combdir']))
-    make_dirs("%s/%s/psgfit" % (_params['wdir'], _params['_combdir']))
+    if len(sys.argv) == 3:
+        shutil.copyfile(configfile, "%s/%s" % (_dir_baygaud_combined, configfile))
+    elif len(sys.argv) == 2:
+        shutil.copyfile('_baygaud_params.py', "%s/%s" % (_dir_baygaud_combined, '_baygaud_params.py'))
 
-    make_dirs("%s/%s/cool" % (_params['wdir'], _params['_combdir']))
-    make_dirs("%s/%s/warm" % (_params['wdir'], _params['_combdir']))
-    make_dirs("%s/%s/hot" % (_params['wdir'], _params['_combdir']))
-
-    make_dirs("%s/%s/ngfit" % (_params['wdir'], _params['_combdir']))
-
+    make_dirs("%s/sgfit" % _dir_baygaud_combined)
+    make_dirs("%s/psgfit" % _dir_baygaud_combined)
+    make_dirs("%s/cool" % _dir_baygaud_combined)
+    make_dirs("%s/warm" % _dir_baygaud_combined)
+    make_dirs("%s/hot" % _dir_baygaud_combined)
+    make_dirs("%s/ngfit" % _dir_baygaud_combined)
 
 
     #-----------------------------------------------#
@@ -10645,9 +10690,10 @@ def main():
     #   --> gx_opt : optimal n-gauss array
     #|________________________________________________________________________________________|
     # Bayesian model selection : based on bayes factor
-    bf_limit = _params['bayes_factor_limit']
+    bf_limit = int(_params['bayes_factor_limit'])
 
     if max_ngauss == 1:
+        print(bf_limit)
         opt_ngmap_gmax_ng = g1_opt_bf(_fitsarray_gfit_results2, bevidences_sort, g_num_sort, bf_limit)
         print() 
         #print(opt_ngmap_gmax_ng)
@@ -10790,11 +10836,11 @@ def main():
         #-----------------------------------------------#
         # ---> make bulk & non_bulk directories if not present
         #_______________________________________________#
-        if not os.path.exists("%s/%s/bulk" % (_params['wdir'], _params['_combdir'])):
-            make_dirs("%s/%s/bulk" % (_params['wdir'], _params['_combdir']))
+        if not os.path.exists("%s/bulk" % _dir_baygaud_combined):
+            make_dirs("%s/bulk" % _dir_baygaud_combined)
 
-        if not os.path.exists("%s/%s/non_bulk" % (_params['wdir'], _params['_combdir'])):
-            make_dirs("%s/%s/non_bulk" % (_params['wdir'], _params['_combdir']))
+        if not os.path.exists("%s/non_bulk" % _dir_baygaud_combined):
+            make_dirs("%s/non_bulk" % _dir_baygaud_combined)
 
         # bulk_ref_vf : reference 2d map
         bulk_ref_vf = fitsio.read(_params['_bulk_model_dir'] + '/' + _params['_bulk_ref_vf'])

@@ -240,7 +240,7 @@ def loaddata():
         fillentry(entry_path_cube, path_cube)
 
         #possible_path_classified = glob.glob(os.path.dirname(path_cube)+'/baygaud_output*/output_merged/classified*')
-        possible_path_classified = glob.glob(os.path.dirname(path_cube) + '/' + _params['_combdir'])
+        possible_path_classified = glob.glob(os.path.dirname(path_cube) + '/' + _params['_combdir'] + '.%d' % _classified_index)
         if(len(possible_path_classified)==1):
             browse_classified(possible_path_classified[0])
         elif(len(possible_path_classified)>1):
@@ -467,17 +467,43 @@ frame_master.pack(fill=BOTH, expand=True)
 root.config(menu=menubar)
 root.bind('f', fix_cursor)
 
+if len(sys.argv) == 1:
+    print("")
+    print(91*"_")
+    print(91*"")
+    print(" :: baygaud_viewer.py usage ::")
+    print(91*"")
+    print(" usage-1: running baygaud_viewer.py with baygaud_params file")
+    print(" > python3 baygaud_viewer.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]")
+    print(" output-index is the postfix number of the baygaud segments merged directory."
+    print(" i.e., 'segmts_merged_n_classified.[output-index]' in 'wdir'"
+    print(" e.g.,")
+    print(" > python3 baygaud_viewer.py _baygaud_params.ngc2403.txt 1")
 
-if len(sys.argv) < 2:
-    ("WARNING: No configfile supplied, trying default values")
-    _params=default_params()
+    print(91*"-")
+    print(" usage-2: running baygaud_viewer.py with the DEFAULT baygaud_params file")
+    print("        : the DEFAULT baygaud_params file: _baygaud_params.py")
+    print(" > python3 baygaud_viewer.py [ARG1: output-index, 1, 2, ...]")
+    print(" e.g.,")
+    print(" > python3 baygaud_viewer.py 1")
+    print(91*"_")
+    print("")
+    sys.exit()
 
 elif len(sys.argv) == 2:
+    ("WARNING: No configfile supplied, trying default values")
+    _params=default_params()
+    _classified_index = int(sys.argv[1])
+
+
+elif len(sys.argv) == 3:
     configfile = sys.argv[1]
     _params=read_configfile(configfile)
+    _classified_index = int(sys.argv[2])
+
 
 _path_cube = f"{_params['wdir']}/{_params['input_datacube']}"
-_path_classified = f"{_params['wdir']}/{_params['_combdir']}"
+_path_classified = f"{_params['wdir']}/{_params['_combdir']}.{_classified_index}"
 read_ngfit(path_cube=_path_cube, path_classified=_path_classified)
 
 root.mainloop()
