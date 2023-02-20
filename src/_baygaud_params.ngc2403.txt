@@ -25,8 +25,8 @@ main_baygaud: '/home/seheon/research/code/_python/baygaud_py/baygaud-PI/src'  # 
 wdir: '/home/seheon/research/code/_python/baygaud_py/baygaud-PI/demo/test_cube'  # <---- UPDATE HERE
 
 # output directory
-_segdir: 'baygaud_segs_output'
-_combdir: 'baygaud_segs_merged_n_classified'
+_segdir: 'segmts'
+_combdir: 'segmts_merged_n_classified'
 
 #+++++++++++++++++++++++++++++++++
 # input data cube
