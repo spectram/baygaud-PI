@@ -88,8 +88,8 @@
 
 		|| Set data directory; segment output directory in _baygaud_params.py in 'src'
 		'wdir':'/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube',
-		'_segdir':'baygaud_segs_output',
-		'_combdir':'baygaud_segs_merged_n_classified'
+		'_segdir':'segmts',
+		'_combdir':'segmts_merged_n_classified'
 
 		|| Input HI data cube (required)
 		'input_datacube':'ngc2403.regrid.testcube.0.fits'
