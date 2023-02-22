@@ -165,9 +165,9 @@ def derive_rms_npoints(_inputDataCube, _cube_mask_2d, _x, _params, ngauss):
                 # residual : input_flux - ngfit_flux
                 _res_spect = ((_inputDataCube[:, j, i]-_f_min)/(_f_max-_f_min) - _f_ngfit)
                 # rms
-                #print(np.where(_x > _x_lower and _x < _x_upper))
-                _index_t = np.argwhere((_x > _x_lower) & (_x < _x_upper))
-                #print(_index_t)
+                #print(np.where(_x < _x_lower or _x > _x_upper))
+                _index_t = np.argwhere((_x < _x_lower) | (_x > _x_upper))
+                #print(_index_t) <-- remove these elements
                 _res_spect_ft = np.delete(_res_spect, _index_t)
     
                 # rms
@@ -228,9 +228,9 @@ def little_derive_rms_npoints(_inputDataCube, i, j, _x, _f_min, _f_max, ngauss, 
     # residual : input_flux - ngfit_flux
     _res_spect = ((_inputDataCube[:, j, i]-_f_min)/(_f_max-_f_min) - _f_ngfit)
     # rms
-    #print(np.where(_x > _x_lower and _x < _x_upper))
-    _index_t = np.argwhere((_x > _x_lower) & (_x < _x_upper))
-    #print(_index_t)
+    #print(np.where(_x < _x_lower or _x > _x_upper))
+    _index_t = np.argwhere((_x < _x_lower) | (_x > _x_upper))
+    #print(_index_t) <-- remove these elements
     _res_spect_ft = np.delete(_res_spect, _index_t)
 
     # rms
@@ -238,6 +238,15 @@ def little_derive_rms_npoints(_inputDataCube, i, j, _x, _f_min, _f_max, ngauss, 
     _rms_ngfit = np.std(_res_spect_ft) # normalised
     # bg
     #_bg_ngfit = _gfit_results_temp[1]*(_f_max - _f_min) + _f_min # bg
+
+    #if i == 531 and j == 531:
+    #    #print(_x)
+    #    print(_x_lower, _x_upper)
+    #    #print(_f_max, _f_min)
+    #    print(_res_spect_ft)
+    #    print(_rms_ngfit*(_f_max-_f_min))
+    #    #print((_inputDataCube[:, j, i]-_f_min)/(_f_max-_f_min))
+    #    #print(_inputDataCube[:, j, i])
 
     del(_x_boundaries, _x_boundaries_ft, _index_t, _res_spect_ft)
     gc.collect()
@@ -644,6 +653,8 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
                 #gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
                 gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _bg_flux) # peak flux-e
 
+            # lastly put rms 
+            #________________________________________________________________________________________|
             gfit_results[j][k][2*(3*_max_ngauss+2)+k] = gfit_results[j][k][2*(3*_max_ngauss+2)+k]*(_f_max - _f_min) # rms-(k+1)gfit
             #________________________________________________________________________________________|
             #|---------------------------------------------------------------------------------------|
