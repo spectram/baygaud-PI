@@ -88,8 +88,8 @@
 
 		|| Set data directory; segment output directory in _baygaud_params.py in 'src'
 		'wdir':'/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube',
-		'_segdir':'baygaud_segs_output',
-		'_combdir':'baygaud_segs_merged_n_classified'
+		'_segdir':'segmts',
+		'_combdir':'segmts_merged_n_classified'
 
 		|| Input HI data cube (required)
 		'input_datacube':'ngc2403.regrid.testcube.0.fits'
@@ -149,7 +149,7 @@
 		
 		# Output directory in ‘_baygaud_params.py’
 		
-		'_segdir':'baygaud_segs_output',
+		_segdir: 'segmts'
 
 		--> In the _segdir directory, all of the Gaussian fit results for each sub-cube (segment, xN--ys:ye--vel)
 		are saved in binary format. For example,
@@ -178,7 +178,7 @@
 		--> As for 'baygaud.py', the same options are available. 'baygaud_classify.py' can be run either with
 		no arguments to use the default baygaud parameters, or with a specified baygaud parameter file. 
 		
-		--> If you run baygaud_classify.py without arguments, it will print out the usage.
+		--> If you simply run the script without any arguments. This will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py
 		--> 
 		___________________________________________________________________________________________
@@ -213,7 +213,7 @@
 		--> In the working directory, as in _baygaud_params.py above,
 		
 		# working directory where the input data cube is
-		'wdir':'/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
+		wdir: '/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
 		
 		--> A directory named 'segmts_merged_n_classified.1' will be created where the decomposed Gaussian components
 		are stored. These Gaussian components (such as bulk, cool, warm, hot, non_bulk, psgfit, and sgfit,
@@ -230,14 +230,14 @@
 		warm
 
 
-5. Running baygaud_viwer.py
+5. Running baygaud_viewer.py
 
 		--> You can view the results of baygaud's multi-Gaussian profile analysis for individual
 		velocity profiles using the 'baygaud_viewer.py' code. This code reads the optimal number
 		of Gaussian profiles derived by 'baygaud_classify.py' and displays the decomposed Gaussian
 		components overlaid on each spectral line.
 		
-		--> If you run baygaud_viewer.py without arguments, it will print out the usage.
+		--> If you simply run the script without any arguments. This will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py
 		--> 
 		___________________________________________________________________________________________
