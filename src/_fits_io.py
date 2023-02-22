@@ -78,12 +78,12 @@ def read_datacube(_params):
     print("The highest velocity [km/s]: ", _vel_max)
     print("CDELT3 [m/s]: ", _cdelt3)
     if _cdelt3 < 0:
-        print("[--> Spctral axis with decreasing order...]")
+        print("[--> Spectral axis with decreasing order...]")
     else:
-        print("[--> Spctral axis with increasing order...]")
+        print("[--> Spectral axis with increasing order...]")
     print("")
     print("")
-    print(_x)
+    #print(_x)
 
     #_inputDataCube = fitsio.read(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
     _inputDataCube = fitsio.read(_params['wdir'] + '/' + _params['input_datacube'])
