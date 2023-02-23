@@ -1220,7 +1220,8 @@ def get_dynesty_sampler_results(_sampler):
     # Compute weighted mean and covariance.
     mean, cov = dyfunc.mean_and_cov(samples, weights)
     bestfit_results = _sampler.results.samples[-1, :]
-    log_Z = log(exp(_sampler.results.logz[-1]) - exp(_sampler.results.logz[-2]))
+    log_Z = _sampler.results.logz[-1]
+    #log_Z = log(exp(_sampler.results.logz[-1]) - exp(_sampler.results.logz[-2]))
 
     #print(bestfit_results, log_Z)
     #print(concatenate((bestfit_results, diag(cov)**0.5)))
