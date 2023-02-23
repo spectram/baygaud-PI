@@ -66,6 +66,7 @@ def derive_rms_npoints(_inputDataCube, _cube_mask_2d, _x, _params, ngauss):
     gfit_priors_init = np.zeros(2*5, dtype=np.float32)
     _x_boundaries = np.full(2*ngauss, fill_value=-1E11, dtype=np.float32)
     #gfit_priors_init = [sig1, bg1, x1, std1, p1, sig2, bg2, x2, std2, p2]
+    # for the first single Gaussian fit: optimal priors will be updated later based on the sgfit
     gfit_priors_init = [0.0, 0.0, 0.01, 0.01, 0.01, 0.5, 0.6, 0.99, 0.6, 1.01]
 
     k=0
@@ -283,6 +284,7 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
         # prior arrays for the 1st single Gaussian fit
         gfit_priors_init = np.zeros(2*5, dtype=np.float32)
         #gfit_priors_init = [sig1, bg1, x1, std1, p1, sig2, bg2, x2, std2, p2]
+        # for the first single Gaussian fit: optimal priors will be updated later based on the sgfit
         gfit_priors_init = [0.0, 0.0, 0.01, 0.01, 0.01, 0.5, 0.6, 0.99, 0.6, 1.01]
 
         if _cube_mask_2d[j+_js, i] <= 0 : # if masked, then skip : NOTE THE MASK VALUE SHOULD BE negative.

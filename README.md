@@ -216,7 +216,7 @@
 		wdir: '/home/seheon/research/code/_python/baygaud_py/baygaud_PI/demo/test_cube'
 		
 		--> A directory named 'segmts_merged_n_classified.1' will be created where the decomposed Gaussian components
-		are stored. These Gaussian components (such as bulk, cool, warm, hot, non_bulk, psgfit, and sgfit,
+		are stored. These Gaussian components (such as bulk, cool, warm, hot, non_bulk, psgfit, hvc and sgfit,
 		or any others defined by the user) are classified based on their kinematic properties set in the
 		'_baygaud_params.py' file.
 		
@@ -228,6 +228,7 @@
 		psgfit
 		sgfit
 		warm
+		hvc
 
 
 5. Running baygaud_viewer.py
@@ -237,7 +238,7 @@
 		of Gaussian profiles derived by 'baygaud_classify.py' and displays the decomposed Gaussian
 		components overlaid on each spectral line.
 		
-		--> If you simply run the script without any arguments. This will print out the usage.
+		--> If you simply run the script without any arguments, this will print out the usage.
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py
 		--> 
 		___________________________________________________________________________________________
@@ -273,8 +274,8 @@
 ![Screen Shot 2023-02-05 at 12 15 55 AM](https://user-images.githubusercontent.com/100483350/216775323-2ebc07a7-f6ca-4ec1-980f-e11b03d1c328.png)
 
 
-		When a 2D map (such as a single Gaussian velocity field, velocity dispersion, integrated
-		intensity, N-Gauss, or S/N) extracted by baygaud-PI (selected in the menu) is displayed,
+		When a 2D map (such as the single Gaussian velocity field, velocity dispersion, integrated
+		intensity, N-Gauss, or peak flux S/N) extracted by baygaud-PI (selected in the menu) is displayed,
 		you can move your mouse cursor over the map to locate a specific spectral line. 
 		You can also zoom-in or -out a specific region by scrollong the mouse wheel.
 
