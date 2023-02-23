@@ -105,7 +105,7 @@ def default_params():
     'sample':'rwalk', # or auto
     #'sample':'slice', # or auto
     #'sample':'rslice', # or auto
-    'dlogz':0.1,
+    'dlogz':0.05,
     'maxiter':999999,
     'maxcall':999999,
     'update_interval':2.0, # ===> 2.0 x nlilve
