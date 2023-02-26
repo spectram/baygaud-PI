@@ -198,9 +198,11 @@ def moment_analysis(_params):
 
     # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403 : VLA + SINGLE DISH
     # hdulist should be used instead of hdu
-    if _input_cube.beam_threshold > 0.09: # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403
-        _N_masked = np.where(np.isnan(_input_cube_peak_sn_masked.hdulist[0].data), -1E5, _input_cube_peak_sn_masked.hdulist[0].data)
-    #_N_masked = np.where(np.isnan(_input_cube_peak_sn_masked.hdu.data), -1E5, _input_cube_peak_sn_masked.hdu.data)
+
+	# UNCOMMENT FOR NGC 2403 multi-resolution cube !!!!!!!!!!!!!!!!!!!
+    #if _input_cube.beam_threshold > 0.09: # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403
+    #    _N_masked = np.where(np.isnan(_input_cube_peak_sn_masked.hdulist[0].data), -1E5, _input_cube_peak_sn_masked.hdulist[0].data)
+    _N_masked = np.where(np.isnan(_input_cube_peak_sn_masked.hdu.data), -1E5, _input_cube_peak_sn_masked.hdu.data)
 
     _N_masked = np.where(np.isinf(_N_masked), -1E5, _N_masked)
     _N_masked = np.where(np.isinf(-1*_N_masked), -1E5, _N_masked)
@@ -233,9 +235,10 @@ def moment_analysis(_params):
     # 1. extract the peak flux map
     # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403
     # hdulist should be used instead of hdu
-    if _input_cube.beam_threshold > 0.09: # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403
-        peak_flux_map = _input_cube.hdulist[0].data.max(axis=0)
-    #peak_flux_map = _input_cube.hdu.data.max(axis=0)
+	# UNCOMMENT FOR NGC 2403 multi-resolution cube !!!!!!!!!!!!!!!!!!!
+    #if _input_cube.beam_threshold > 0.09: # for varying beam size over the channels : e.g., combined data cube with different resolutions, NGC 2403
+    #    peak_flux_map = _input_cube.hdulist[0].data.max(axis=0)
+    peak_flux_map = _input_cube.hdu.data.max(axis=0)
     peak_flux_map = np.where(np.isnan(peak_flux_map), -1E5, peak_flux_map)
     peak_flux_map = np.where(np.isinf(peak_flux_map), 1E5, peak_flux_map)
     peak_flux_map = np.where(np.isinf(-1*peak_flux_map), -1E5, peak_flux_map)
