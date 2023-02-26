@@ -66,7 +66,7 @@ def derive_rms_npoints(_inputDataCube, _cube_mask_2d, _x, _params, ngauss):
     gfit_priors_init = np.zeros(2*5, dtype=np.float32)
     _x_boundaries = np.full(2*ngauss, fill_value=-1E11, dtype=np.float32)
     #gfit_priors_init = [sig1, bg1, x1, std1, p1, sig2, bg2, x2, std2, p2]
-    # for the first single Gaussian fit: optimal priors will be updated later based on the sgfit
+    # for the first single gaussian fit: optimal priors will be updated later
     gfit_priors_init = [0.0, 0.0, 0.01, 0.01, 0.01, 0.5, 0.6, 0.99, 0.6, 1.01]
 
     k=0
@@ -279,15 +279,16 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
 
         _f_max = np.max(_inputDataCube[:,j+_js,i]) # peak flux : being used for normalization
         _f_min = np.min(_inputDataCube[:,j+_js,i]) # lowest flux : being used for normalization
-        #print(_f_max, _f_min)
+        #print("f_max:", _f_max, "f_min:", _f_min)
 
         # prior arrays for the 1st single Gaussian fit
         gfit_priors_init = np.zeros(2*5, dtype=np.float32)
         #gfit_priors_init = [sig1, bg1, x1, std1, p1, sig2, bg2, x2, std2, p2]
-        # for the first single Gaussian fit: optimal priors will be updated later based on the sgfit
-        gfit_priors_init = [0.0, 0.0, 0.01, 0.01, 0.01, 0.5, 0.6, 0.99, 0.6, 1.01]
+        # for the first single gaussian fit: optimal priors will be updated later
+        #gfit_priors_init = [0.0, 0.0, 0.01, 0.01, 0.01, 0.5, 0.6, 0.99, 0.6, 1.01]
+        gfit_priors_init = [0.0, 0.0, 0.001, 0.001, 0.001, 0.5, 0.6, 0.999, 0.999, 1.01]
 
-        if _cube_mask_2d[j+_js, i] <= 0 : # if masked, then skip : NOTE THE MASK VALUE SHOULD BE negative.
+        if _cube_mask_2d[j+_js, i] <= 0 : # if masked, then skip : NOTE THE MASK VALUE SHOULD BE zero or negative.
             print("mask filtered: %d %d | peak S/N: %.1f :: S/N limit: %.1f | integrated S/N: %.1f :: S/N limit: %.1f :: f_min: %e :: f_max: %e" \
                 % (i, j+_js, _peak_sn_map[j+_js, i], _params['peak_sn_limit'], _sn_int_map[j+_js, i], _params['int_sn_limit'], _f_min, _f_max))
 
@@ -392,7 +393,7 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
             #---------------------------------------------------------
 
             #---------------------------------------------------------
-            # derive rms of the profile given the current ngfit
+            # derive rms of the profile given the current ngfit <---- || normalised (0~1) units ||
             _rms_ngfit = little_derive_rms_npoints(_inputDataCube, i, j+_js, _x, _f_min, _f_max, ngauss, _gfit_results_temp)
             #---------------------------------------------------------
 
@@ -419,6 +420,7 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
 
 
                 # peak s/n : more accurate peak s/n from the first sgfit
+                # <-- || normalised units (0~1)||
                 _bg_sgfit = _gfit_results_temp[1]
                 _p_sgfit = _gfit_results_temp[4] # bg already subtracted
                 _peak_sn_sgfit = _p_sgfit/_rms_ngfit
@@ -467,16 +469,14 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
 
                         #________________________________________________________________________________________|
                         # peak flux --> data cube units
-                        #gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) + _f_min # flux
-                        gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _bg_flux) # peak flux
+                        gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) # peak flux
         
                         #________________________________________________________________________________________|
                         # velocity-e, velocity-dispersion-e --> km/s
                         gfit_results[j][k][7 + 3*(m+k)] = gfit_results[j][k][7 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-e
                         gfit_results[j][k][8 + 3*(m+k)] = gfit_results[j][k][8 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-dispersion-e
                         #________________________________________________________________________________________|
-                        #gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
-                        gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _bg_flux) # flux-e
+                        gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
 
                     # lastly put rms 
                     gfit_results[j][k][2*(3*_max_ngauss+2)+k] = gfit_results[j][k][2*(3*_max_ngauss+2)+k]*(_f_max - _f_min) # rms-(k+1)gfit
@@ -643,17 +643,15 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
                 gfit_results[j][k][3 + 3*m] = gfit_results[j][k][3 + 3*m]*(_vel_max - _vel_min) # velocity-dispersion
 
                 #________________________________________________________________________________________|
-                # peak flux --> data cube units : (_f_max - _bg_flux) should be used for scaling as the normalised peak flux is from the bg
-                #gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) + _f_min # flux
-                gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _bg_flux) # flux
+                # peak flux --> data cube units : (_f_max - _f_min) should be used for scaling 
+                gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) # peak flux
 
                 #________________________________________________________________________________________|
                 # velocity-e, velocity-dispersion-e --> km/s
                 gfit_results[j][k][7 + 3*(m+k)] = gfit_results[j][k][7 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-e
                 gfit_results[j][k][8 + 3*(m+k)] = gfit_results[j][k][8 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-dispersion-e
 
-                #gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
-                gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _bg_flux) # peak flux-e
+                gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
 
             # lastly put rms 
             #________________________________________________________________________________________|
@@ -661,8 +659,12 @@ def run_dynesty_sampler_optimal_priors(_inputDataCube, _x, _peak_sn_map, _sn_int
             #________________________________________________________________________________________|
             #|---------------------------------------------------------------------------------------|
 
+
+            print(gfit_results)
+
     #del(_gfit_results_temp, gfit_priors_init)
     #gc.collect()
+
 
     return gfit_results
 
@@ -861,13 +863,11 @@ def run_dynesty_sampler_optimal_priors_org(_inputDataCube, _x, _peak_sn_map, _sn
                         # velocity, velocity-dispersion --> km/s
                         gfit_results[j][k][2 + 3*m] = gfit_results[j][k][2 + 3*m]*(_vel_max - _vel_min) + _vel_min # velocity
                         gfit_results[j][k][3 + 3*m] = gfit_results[j][k][3 + 3*m]*(_vel_max - _vel_min) # velocity-dispersion
-                        #gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) + _f_min # flux
-                        gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _bg_flux) # peak flux
+                        gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) # flux
         
                         gfit_results[j][k][7 + 3*(m+k)] = gfit_results[j][k][7 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-e
                         gfit_results[j][k][8 + 3*(m+k)] = gfit_results[j][k][8 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-dispersion-e
-                        #gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
-                        gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _bg_flux) # flux-e
+                        gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
 
                     # lastly put rms 
                     gfit_results[j][k][2*(3*_max_ngauss+2)+k] = gfit_results[j][k][2*(3*_max_ngauss+2)+k]*(_f_max - _f_min) # rms-(k+1)gfit
@@ -1008,13 +1008,11 @@ def run_dynesty_sampler_optimal_priors_org(_inputDataCube, _x, _peak_sn_map, _sn
                 # velocity, velocity-dispersion --> km/s
                 gfit_results[j][k][2 + 3*m] = gfit_results[j][k][2 + 3*m]*(_vel_max - _vel_min) + _vel_min # velocity
                 gfit_results[j][k][3 + 3*m] = gfit_results[j][k][3 + 3*m]*(_vel_max - _vel_min) # velocity-dispersion
-                #gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min) + _f_min # flux
-                gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _bg_flux) # flux
+                gfit_results[j][k][4 + 3*m] = gfit_results[j][k][4 + 3*m]*(_f_max - _f_min)  # peak flux
 
                 gfit_results[j][k][7 + 3*(m+k)] = gfit_results[j][k][7 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-e
                 gfit_results[j][k][8 + 3*(m+k)] = gfit_results[j][k][8 + 3*(m+k)]*(_vel_max - _vel_min) # velocity-dispersion-e
-                #gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # flux-e
-                gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _bg_flux) # peak flux-e
+                gfit_results[j][k][9 + 3*(m+k)] = gfit_results[j][k][9 + 3*(m+k)]*(_f_max - _f_min) # peak flux-e
 
             gfit_results[j][k][2*(3*_max_ngauss+2)+k] = gfit_results[j][k][2*(3*_max_ngauss+2)+k]*(_f_max - _f_min) # rms-(k+1)gfit
             #________________________________________________________________________________________|
@@ -1224,6 +1222,8 @@ def get_dynesty_sampler_results(_sampler):
     bestfit_results = _sampler.results.samples[-1, :]
     log_Z = _sampler.results.logz[-1]
     #log_Z = log(exp(_sampler.results.logz[-1]) - exp(_sampler.results.logz[-2]))
+    #log_Z_cumulative = _sampler.results.logz[-1]
+    #print("log-Z:", log_Z, "log-Z_cum:", log_Z_cumulative, _sampler.results.logz.shape, _sampler.results.summary())
 
     #print(bestfit_results, log_Z)
     #print(concatenate((bestfit_results, diag(cov)**0.5)))
