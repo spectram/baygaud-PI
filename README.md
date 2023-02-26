@@ -138,11 +138,11 @@
 
 		--> You can run 'baygaud.py' without arguments, which will load the 'default' baygaud parameters as given
 		in '_baygaud_params.py', or you can run it with your own baygaud parameter file. For example, you can copy
-		a template file '_baygaud_params.ngc2403.txt' in the baygaud-PI directory and edit it for your target galaxy.
+		a template file '_baygaud_params.ngc2403.yaml' in the baygaud-PI directory and edit it for your target galaxy.
 		
 		(baygaud) [seheon@sejong00] python3.10 baygaud.py
 		or 
-		(baygaud) [seheon@sejong00] python3.10 baygaud.py _baygaud_params.ngc2403.txt
+		(baygaud) [seheon@sejong00] python3.10 baygaud.py _baygaud_params.ngc2403.yaml
 
 		--> Check the running processes (utilizing multi-cores) on the machine.
 		--> Check the output directory where the baygaud fitting results are stored in binary format.
@@ -186,9 +186,9 @@
  		:: baygaud_classify.py usage ::
 
  		usage-1: running baygaud_classify.py with baygaud_params file
- 		> python3 baygaud_classify.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]
+ 		> python3 baygaud_classify.py [ARG1: _baygaud_params.yaml] [ARG2: output-index, 1, 2, ...]
 		 e.g.,
-		 > python3 baygaud_classify.py _baygaud_params.ngc2403.txt 1
+		 > python3 baygaud_classify.py _baygaud_params.ngc2403.yaml 1
 		-------------------------------------------------------------------------------------------
  		usage-2: running baygaud_classify.py with the DEFAULT baygaud_params file
   	      	: the DEFAULT baygaud_params file: _baygaud_params.py
@@ -201,7 +201,7 @@
 		
 		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py 1
 		or
-		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py _baygaud_params.ngc2403.txt 1 (<-- recommended)
+		(baygaud) [seheon@sejong00] python3.10 baygaud_classify.py _baygaud_params.ngc2403.yaml 1 (<-- RECOMMENDED)
 		--> The latter option will be useful when running baygaud-PI for a number of galaxies,
 		for which the _baygaud_params file has been specified.
 		
@@ -246,11 +246,11 @@
  		:: baygaud_viewer.py usage ::
 
  		usage-1: running baygaud_viewer.py with baygaud_params file
-		 > python3 baygaud_viewer.py [ARG1: _baygaud_params.txt] [ARG2: output-index, 1, 2, ...]
+		 > python3 baygaud_viewer.py [ARG1: _baygaud_params.yaml] [ARG2: output-index, 1, 2, ...]
  		output-index is the postfix number of the baygaud segments merged directory.
 		 i.e., 'segmts_merged_n_classified.[output-index]' in 'wdir'
  		e.g.,
- 		> python3 baygaud_viewer.py _baygaud_params.ngc2403.txt 1
+ 		> python3 baygaud_viewer.py _baygaud_params.ngc2403.yaml 1
 		-------------------------------------------------------------------------------------------
 		 usage-2: running baygaud_viewer.py with the DEFAULT baygaud_params file
  		       : the DEFAULT baygaud_params file: _baygaud_params.py
@@ -262,7 +262,7 @@
 
 		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py 1
 		or
-		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.txt 1 (<-- recommended)
+		(baygaud) [seheon@sejong00] python3.10 baygaud_viewer.py _baygaud_params.ngc2403.yaml 1 (<-- RECOMMENDED)
 
 		
 ![Screen Shot 2023-02-05 at 12 19 38 AM](https://user-images.githubusercontent.com/100483350/216775296-c040f123-9062-4c38-8a53-fd5e60467d8a.png)
