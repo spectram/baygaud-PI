@@ -137,8 +137,9 @@
 3. Running baygaud.py
 
 		--> You can run 'baygaud.py' without arguments, which will load the 'default' baygaud parameters as given
-		in '_baygaud_params.py', or you can run it with your own baygaud parameter yaml file (!!! <-- RECOMMENDED !!!). For example, you can copy
-		a template file '_baygaud_params.ngc2403.yaml' in the baygaud-PI directory and edit it for your target galaxy.
+		in '_baygaud_params.py', or you can run it with your own baygaud parameter yaml file (!!! <-- RECOMMENDED !!!).
+		For example, you can copy a template file '_baygaud_params.ngc2403.yaml' in the baygaud-PI directory and
+		edit it for your target galaxy as in '_baygaud_params.py' but following yaml syntax (see '_baygaud_params.ngc2403.yaml').
 		
 		(baygaud) [seheon@sejong00] python3.10 baygaud.py
 		or 
