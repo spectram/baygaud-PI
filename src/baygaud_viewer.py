@@ -351,37 +351,36 @@ def plot_profiles():
 
     dict_params['path_fig1'] = f"{dict_params['path_classified']}/sgfit/sgfit.G%d_1.7.fits" % n_gauss
     ng_opt_fits = glob.glob(dict_params['path_fig1'])[0]
-    ng_opt = fits.getdata(ng_opt_fits)                                                                                                                                                        
+    ng_opt = fits.getdata(ng_opt_fits)
+
+    if(np.isnan(ng_opt[y,x])==False):                                                                                                                                                        
   
-    for i in range(ng_opt[y, x].astype(int)):
-        vel = dict_data['vels'][i][y, x]
-        disp = dict_data['disps'][i][y, x]
-        amp = dict_data['amps'][i][y, x]
-        sn = dict_data['sn'][i][y, x]
+        for i in range(ng_opt[y, x].astype(int)):
+            vel = dict_data['vels'][i][y, x]
+            disp = dict_data['disps'][i][y, x]
+            amp = dict_data['amps'][i][y, x]
+            sn = dict_data['sn'][i][y, x]
 
-        if np.any(np.isnan([vel, disp, amp])):
-            continue
+            if np.any(np.isnan([vel, disp, amp])):
+                continue
 
-        ploty = gauss_model(spectral_axis, amp, vel, disp) * dict_params['multiplier_cube']
-        total += ploty
-        ploty += bg
-        ax2.plot(spectral_axis, ploty, label=f'G{i + 1} (S/N: {sn:.2f})', color=colors[i], ls='-', alpha=0.5)
-        ax2.legend(loc='upper right')
-        ploty -= bg
+            ploty = gauss_model(spectral_axis, amp, vel, disp) * dict_params['multiplier_cube']
+            total += ploty
+            ploty += bg
+            ax2.plot(spectral_axis, ploty, label=f'G{i + 1} (S/N: {sn:.2f})', color=colors[i], ls='-', alpha=0.5)
+            ax2.legend(loc='upper right')
+            ploty -= bg
+
+        panel_label(dict_plot['ax2'], '(x, y: N-Gauss)=(%d, %d: %d)' % (x, y, ng_opt[y, x]), fontsize=13)
+    panel_label(dict_plot['ax3'], 'Residuals', fontsize=13)
 
     total += bg
     subed -= total
-
 
     dict_plot['ax2'].plot(dict_data['spectral_axis'], total, color='red', ls='--', linewidth=3, alpha=0.5)
     dict_plot['ax3'].step(dict_data['spectral_axis'], subed, color='orange', ls='-', alpha=0.7)
     dict_plot['ax3'].plot(dict_data['spectral_axis'], rms_axis, color='purple', ls='--', alpha=0.7)
     dict_plot['ax3'].plot(dict_data['spectral_axis'], -1*rms_axis, color='purple', ls='--', alpha=0.7)
-
-    #print(ng_opt[300, 300])
-
-    panel_label(dict_plot['ax2'], '(x, y: N-Gauss)=(%d, %d: %d)' % (x, y, ng_opt[y, x]), fontsize=13)
-    panel_label(dict_plot['ax3'], 'Residuals', fontsize=13)
 
     dict_plot['ax2'].text(-0.12, -0, 'Flux density ({})'.format(dict_params['unit_cube']), ha='center', va='center', transform = dict_plot['ax2'].transAxes, rotation=90, fontsize=16)
     dict_plot['ax3'].set_xlabel(r'Spectral axis (km$\,$s$^{-1}$)', fontsize=16)
