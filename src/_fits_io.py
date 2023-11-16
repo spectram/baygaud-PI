@@ -11,7 +11,6 @@
 
 #|-----------------------------------------|
 import numpy as np
-import fitsio
 import sys
 
 import astropy.units as u
@@ -52,12 +51,13 @@ def read_datacube(_params):
     _params['cdelt2'] = _cdelt2   
     _params['cdelt3'] = _cdelt3   
 
-    cube = SpectralCube.read(_params['wdir'] + '/' + _params['input_datacube']).with_spectral_unit(u.km/u.s) # in km/s
+    # cube = SpectralCube.read(_params['wdir'] + '/' + _params['input_datacube']).with_spectral_unit(u.km/u.s) # in km/s
+    cube = SpectralCube.read(_params['wdir'] + '/' + _params['input_datacube']) # in km/s
 
     # normalise velocity-axis to 0-1 scale
     _x = np.linspace(0, 1, _naxis3, dtype=np.float32)
-    _vel_min = cube.spectral_axis.min().value
-    _vel_max = cube.spectral_axis.max().value
+    _vel_min = cube.spectral_axis.min().value/1000. #in km/s
+    _vel_max = cube.spectral_axis.max().value/1000.
     _params['vel_min'] = _vel_min   
     _params['vel_max'] = _vel_max  
 
@@ -85,8 +85,10 @@ def read_datacube(_params):
     print("")
     #print(_x)
 
-    #_inputDataCube = fitsio.read(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
-    _inputDataCube = fitsio.read(_params['wdir'] + '/' + _params['input_datacube'])
+    #_inputDataCube = fits.getdata(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
+    _inputDataCube = fits.getdata(_params['wdir'] + '/' + _params['input_datacube'])
+    if(len(_inputDataCube.shape)>3):
+        _inputDataCube = _inputDataCube[0,:,:,:]
     #_spect = _inputDataCube[:,516,488]
     return _inputDataCube, _x
 
@@ -167,7 +169,7 @@ def moment_analysis(_params):
     #_____________________________________
     #-------------------------------------
     # 0. load the input cube
-    #cubedata = fitsio.read(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
+    #cubedata = fits.getdata(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
     _input_cube = SpectralCube.read(_params['wdir'] + '/' + _params['input_datacube']).with_spectral_unit(u.km/u.s, velocity_convention='radio')
 
 
@@ -286,8 +288,8 @@ def moment_analysis_alternate(_params):
             hdu[0].header['CUNIT3'] = 'm/s'
     
     
-    #cubedata = fitsio.read(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
-    cubedata = fitsio.read(_params['wdir'] + '/' + _params['input_datacube'])
+    #cubedata = fits.getdata(_params['wdir'] + _params['input_datacube'], dtype=np.float32)
+    cubedata = fits.getdata(_params['wdir'] + '/' + _params['input_datacube'])
    
     # peak s/n
     _chan_linefree1 = np.mean(fits.open(_params['wdir'] + '/' + _params['input_datacube'])[0].data[0:int(_naxis3*0.05):1, :, :], axis=0) # first 5% channels
